@@ -59,21 +59,22 @@ CellContent get_shot(int row, int col) {
 *** @return True if target field is valid, i.e., inside the field, False otherwise.
 */
 bool shoot(int row, int col) {
-  if (get_my_guess(row, col) == OutOfRange) {
-    return false;
-  }
-  guess_field[row][col] = op_field[row][col];
-  if (guess_field[row][col] == Boat) {
-    for (size_t i = -1; i <= 1; i++) {
-      for (size_t u = -1; u <= 1; u++) {
-        if (get_my_guess(row, col) != OutOfRange) {
-          guess_field[i][u] = Water;
+  if(get_my_guess(row, col) != OutOfRange){
+    if(op_field[row][col] == Boat){
+      for(int i = row - 1; i <= row + 1; i++){
+        for(int u = col - 1; u <= col + 1; u++){
+          if(get_my_guess(i, u) != OutOfRange && op_field[i][u] != Boat){
+            guess_field[i][u] = Water;
+          }
         }
       }
     }
+    guess_field[row][col] = op_field[row][col];
+
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 /**
